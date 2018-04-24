@@ -1,0 +1,60 @@
+// Non-modular or client styles for .l-header region.
+
+#header {
+    padding-bottom: 25px;
+
+    .sitename {
+        font-size: rem-calc(20);
+
+        a {
+            color: $body-font-color;
+            padding: 10px 0;
+            display: block;
+
+            &:hover {
+                color: lighten($body-font-color, 30%);
+            }
+        }
+
+        @media #{$medium-up} {
+            font-size: rem-calc(28);
+
+            a {
+                padding: 45px 0 20px 0;
+                line-height: 1;
+            }
+        }
+
+        white-space: nowrap;
+    }
+
+    .menu-toggler {
+        text-align: right;
+        font-size: rem-calc(22);
+
+        a {
+            color: $body-font-color;
+            padding: 10px 0 10px 30px;
+            display: block;
+        }
+    }
+
+    @media #{$medium-up} {
+        .menu-toggler {
+            font-size: rem-calc(30);
+
+            a {
+                padding: 45px 20px 0px 30px;
+                display: block;
+                line-height: 1;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    #main-nav {
+        text-align: right;
+    }
+}
+
+// Non-modular or client styles for .l-header region.

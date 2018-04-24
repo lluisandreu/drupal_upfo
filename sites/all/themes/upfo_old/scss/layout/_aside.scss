@@ -1,0 +1,36 @@
+// Non-modular or client styles for asides or sidebars.
+
+.front-aside {
+	#block-views-featured-blog-block, #block-block-5 {
+		text-align: left;
+		.panel {
+			border: none;
+			background: #f2f2f2;
+		}
+		.svg-aside {
+			float: left;
+			margin-right: 10px;
+		}
+		h2 {
+			font-size: $h2-font-size;
+			text-align: left;
+		}
+		.views-row {
+			margin: 15px auto;
+		}
+	}
+	#block-block-5 {
+		margin-bottom: 40px;
+		.block-title {
+			float: left;
+		}
+		.social-icons {
+			float: right; 
+			i {
+				font-size: 36px;
+				padding-left: 5px;
+				margin-bottom: 5px;
+			}
+		}
+	}
+}

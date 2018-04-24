@@ -1,0 +1,123 @@
+.view-front-slideshow {
+	.orbit-bullets-container {
+		position: absolute; 
+		bottom: 0;
+		width: 100%;
+	}
+	.orbit-bullets li {
+		background: transparent;
+		border: 1px solid $white;
+		&.active {
+			background: $white;
+		}
+	}
+	.view-content {
+		position: relative;
+	}
+	.entries-copyright {
+		position: absolute;
+		bottom: -25px;
+		right: 20px;
+	}
+}
+
+.view-judges {
+	padding: 40px 0 10px 0;
+	text-align: center;
+	.views-row {
+		position: relative;
+	}
+	img {
+		@include radius(30%);
+	}
+	.judge-name {
+		padding: 20px 0 0 0;
+		font-size: rem-calc(28);
+	}
+	.judge-job-title {
+		padding: 0 0 5px 0;
+	}
+	.judge-description {
+		font-size: 15px;
+	    color: #555;
+	    line-height: 21px;
+	}
+	.judges-view-more {
+		padding: 20px 0;
+	}
+
+	.view-partners {
+
+	}
+}
+
+.view-taxonomy-term {
+	padding: 20px 0;
+	.entry-row {
+		position: relative;
+	}
+	.entry-row:hover .entry-overlay {
+		opacity: 1;
+		transform:translateY(0);
+	}
+	.entry-overlay {
+		transition: all .5s ease-in-out .1s;
+		transform:translateY(50px);
+		opacity: 0;
+		position: absolute;
+	    bottom: 10px;
+	    left: 0;
+	    z-index: 1000;
+	    background-color: $white;
+	    color: $oil;
+	    width: 100%;
+	    height: 25%;
+	    text-align: center;
+	    padding: 14px;
+	    font-size: rem-calc(16);
+	}
+	.pager-load-more {
+		margin: 20px auto 0 auto;
+		padding: 0;
+		a {
+			padding-top: 0.875rem;
+		    padding-right: 1.75rem;
+		    padding-bottom: 0.9375rem;
+		    padding-left: 1.75rem;
+		    font-size: 0.8125rem;
+		    background-color: $secondary-color;
+    		color: #000;
+    		&:hover {
+    			background-color: #efef13;
+    		}
+		}
+	}
+}
+
+.view-my-entries {
+	.entry-options {
+		margin-top: 10px;
+	}
+	.button {
+		color: $white;
+	}
+	.panel.add-one {
+		text-align: center;
+	}
+}
+
+.view-blog {
+	h3 {
+		color: $primary-color;
+	}
+	.blog-row-body{
+		background: $white;
+		border-bottom: 4px solid #149CCF;
+		padding: 10px 20px;
+	}
+	.blog-row-posted {
+		color: #777;
+	}
+	@media #{$medium-only} { 
+	}
+}

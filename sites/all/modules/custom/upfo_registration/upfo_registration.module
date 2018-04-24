@@ -1,0 +1,180 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ */
+function upfo_registration_form_alter(&$form, &$form_state, $form_id) {
+  /*
+   *if (isset($form['type']) && $form['type']['#value'] . '_node_settings' == $form_id) {
+   *  $form['workflow']['upload_' . $form['type']['#value']] = array(
+   *    '#type' => 'radios',
+   *    '#title' => t('Attachments'),
+   *    '#default_value' => variable_get('upload_' . $form['type']['#value'], 1),
+   *    '#options' => array(t('Disabled'), t('Enabled')),
+   * );
+   *}
+   */
+  global $user;
+  //dpm($form_id);
+  if($form_id == "user_profile_form") {
+    $theuser = user_load($user->uid);
+    if(!in_array('administrator', array_values($theuser->roles)) && ($theuser->uid != 1)) {
+      $form['field_user_membership_type']['#access'] = FALSE;
+    }
+  }
+  if($form_id == "user_register_form") {
+    //dpm($form);
+    if($user->uid == 0) {
+      unset($form['field_user_membership_type']['und']['#options'][0]);
+      $form['field_user_membership_type']['und']['#default_value'] = 5;
+    } else {
+      $form['field_user_membership_type']['und']['#default_value'] = 0;
+    }
+  }
+  if($form_id == "commerce_checkout_form_checkout") {
+    $form['cart_contents']['#title'] = "Your membership product";
+    $form['customer_profile_billing']['#title'] = "Your personal information";
+    $form['customer_profile_billing']['#description'] = "Your information will not be public or shared.";
+
+  }
+  if($form_id == "commerce_checkout_form_review") {
+    //dpm($form);
+    $form['buttons']['continue']['#value'] = "Complete your order";
+    $form['checkout_review']['review']['#data']['cart_contents']['title'] = "Your membership product";
+    $form['checkout_review']['review']['#data']['account']['title'] = "Your account details";
+    $form['checkout_review']['review']['#data']['customer_profile_billing']['title'] = "Your personal information";
+  }
+}
+
+/**
+ * Implements hook_user_insert().
+ */
+function upfo_registration_user_insert(&$edit, $account, $category) {
+
+  $membership_type = $account->field_user_membership_type['und'][0]['value'];
+  // If account is new and user is not an editor/admin
+  if($account->is_new && $membership_type != 0) {
+  	
+  	// Create a new order for the user
+  	$order = commerce_cart_order_new($account->uid);
+
+    // Add a membership product to the cart
+  	add_product_to_cart($membership_type,$account->uid);
+
+    // Update the order to Checkout Checkout
+  	$order = commerce_order_status_update($order,"checkout_checkout");
+  	$order = commerce_order_save($order);
+
+    // We add a "pre-member" role to the account
+  	user_modify_role($account->uid, 'pre-member', 'add_role');
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function upfo_registration_user_login(&$edit, $account) {
+  // If the user has a NULL time zone, notify them to set a time zone.
+  /*
+   *if (!$user->timezone && variable_get('configurable_timezones', 1) && variable_get('empty_timezone_message', 0)) {
+   *  drupal_set_message(t('Configure your <a href="@user-edit">account time zone setting</a>.', array('@user-edit' => url("user/$user->uid/edit", array('query' => drupal_get_destination(), 'fragment' => 'edit-timezone')))));
+   *}
+   */
+  if(user_has_role(4, $account)) {
+    $orderid = commerce_cart_order_id($account->uid);
+    drupal_set_message(t("In order to become a member and submit your photos you need to pay the entry fee. Please finish the checkout."), 'status', TRUE);
+    // Redirect user to checkout
+    drupal_goto("checkout/" . $orderid);
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function upfo_registration_node_access($node, $op, $account) {
+  $type = is_string($node) ? $node : $node->type;
+
+  /*
+   *if (in_array($type, node_permissions_get_configured_types())) {
+   *  if ($op == 'create' && user_access('create ' . $type . ' content', $account)) {
+   *    return NODE_ACCESS_ALLOW;
+   *  }
+   *
+   *  if ($op == 'update') {
+   *    if (user_access('edit any ' . $type . ' content', $account) || (user_access('edit own ' . $type . ' content', $account) && ($account->uid == $node->uid))) {
+   *      return NODE_ACCESS_ALLOW;
+   *    }
+   *  }
+   *
+   *  if ($op == 'delete') {
+   *    if (user_access('delete any ' . $type . ' content', $account) || (user_access('delete own ' . $type . ' content', $account) && ($account->uid == $node->uid))) {
+   *      return NODE_ACCESS_ALLOW;
+   *    }
+   *  }
+   *}
+   */
+  /* Your code here */
+  if($op == "create" && $node == "entry") {
+      // We want members not to publish more content after reaching their limit
+      if (in_array('member', array_values($account->roles))) {
+        $user_obj = user_load($account->uid);
+        // Get the user limit form account
+        $user_limit = $user_obj->field_user_membership_type['und'][0]['value'];
+        // Get the number of "entries" created by the member so far
+        $user_node_created = get_number_nodes_created($account->uid);
+        if($user_node_created >= $user_limit) {
+          // Deny access 
+          return NODE_ACCESS_DENY;
+        }
+      }
+  }
+
+  // Returning nothing from this function would have the same effect.
+  return NODE_ACCESS_IGNORE;
+}
+
+function upfo_registration_commerce_checkout_complete($order) {
+
+  if($order->status == "checkout_complete") {
+    // Remove "pre-member role" and add "member" with all privileges
+    user_modify_role($order->uid, 'member', 'add_role');
+    user_modify_role($order->uid, 'pre-member', 'remove_role');
+
+    // Attach order id to profile
+    $theuser = user_load($order->uid);
+    $theuser->field_user_order_reference[LANGUAGE_NONE][0]['order_id'] = $order->order_id;
+    $user_node_limit = $theuser->field_user_membership_type['und'][0]['value'];
+
+    $edit = array();
+    user_save($theuser, $edit);
+
+
+    // Update order to Pending after completion
+    $order = commerce_order_status_update($order,"pending");
+    $order = commerce_order_save($order);
+
+    drupal_set_message(t("Welcome on board " . $theuser->name . "! You are now a member. You can upload " . format_plural($user_node_limit, 'only one image', 'up to @count images')), 'status', FALSE);
+    drupal_goto("user/" . $theuser->uid);
+  }
+}
+
+function add_product_to_cart($membership,$useruid) {
+
+  // We need the product SKU to be MEMBERSHIP_*
+	$product_sku = "MEMBERSHIP_" . $membership;
+	$product = commerce_product_load_by_sku($product_sku);
+	$data['context'] = array();
+	$line_item = commerce_product_line_item_new($product, 1, 0, $data);
+	$line_item = commerce_cart_product_add($useruid, $line_item);
+}
+
+function user_modify_role($uid, $role_name, $action) {
+	if ($role = user_role_load_by_name($role_name)) {
+	  user_multiple_role_edit(array($uid), $action, $role->rid);
+	}
+}
+
+function get_number_nodes_created($uid) {
+  $query = db_query("SELECT * FROM `node` WHERE uid = :uid AND type = 'entry'", array(":uid" => $uid));
+  return $query->rowCount();
+}

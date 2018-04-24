@@ -1,0 +1,70 @@
+// Non-modular or client styles for .l-header region.
+
+.top-bar {
+	.name {
+		padding-top: 7px;
+		padding-left: 1em;
+		margin-right: 10px;
+		font-family: $font-family-serif;
+		font-size: rem-calc(20);
+		a {
+			color: $white;
+			&:hover {
+				color: $secondary-color;
+			}
+		}
+	}
+	.enter-competition-link {
+		ul, li {
+			margin: 0;
+			padding: 0;
+		}
+		a {
+			color: $black;
+			background: $secondary-color;
+			line-height: 3.125rem;
+			padding: 0 1em;
+			display: block;
+			&:hover {
+				background: scale-color($secondary-color, $lightness: $button-function-factor);
+			}
+		}
+		button.button, ul.logged-in-user-menu {
+			display: inline-block;
+		}
+		button.button {
+			background: $black;
+			color: $white;
+			top: inherit !important;
+			padding: 17px !important;
+			height: auto !important;
+			margin: 0 !important;
+			font-size: 12px;
+			line-height: 16px;
+			float: right;
+		}
+	}
+	.main-nav {
+		a.active {
+			background: $secondary-color !important;
+			color: $black;
+			&:after {
+				border-color: #000 transparent transparent;
+			}
+			&:hover {
+				color: $black !important;
+			}
+		}
+		.dropdown a.active {
+			color: $black !important;
+		}
+	}
+	&.expanded {
+		.toggle-topbar a span::after {
+    	box-shadow: 0px 0px 0px 1px #fff, 0px 7px 0px 1px #fff, 0px 14px 0px 1px #fff !important;
+    	}
+    	.main-nav {
+    		li {background: #187395 !important;}
+    	}
+	}
+}

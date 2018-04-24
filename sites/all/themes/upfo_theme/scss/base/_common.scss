@@ -1,0 +1,114 @@
+// Common abstract classes to extend or parametrics are stored here.
+
+// Example parametrics.
+// ------------------------------------------------------
+// %font-FONTNAME   {}
+// %font-sans-serif { font-family: sans-serif; }
+// %font-serif      { font-family: serif; }
+
+#colorbox {
+    .cboxPhoto {
+        border: 20px solid $white;
+    }
+}
+
+#cboxOverlay {
+    background: $white;
+    opacity: .9 !important;
+}
+
+.secondary.button {
+    color: $black !important;
+}
+
+.page-node-add-entry {
+    .droppable-image {
+        width: 100%;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #D8D8D8;
+        margin-bottom: 1.25rem;
+        padding: 1.25rem;
+        background: #F2F2F2 none repeat scroll 0% 0%;
+        color: #333;
+    }
+
+    .image-widget-data {
+        float: none;
+    }
+
+    .form-item-field-entry-images-und-0-title {
+        clear: both;
+    }
+}
+
+.page-checkout {
+    .checkout-review, .views-table {
+        width: 100%;
+    }
+}
+
+.alert-box a {
+    color: $white;
+}
+
+.reveal-modal-bg {
+    z-index: 999;
+}
+
+.orbit-container .orbit-slides-container img {
+    margin: auto !important;
+}
+
+// User Registration Membership
+
+#edit-field-user-membership-type {
+    padding: 20px;
+    margin: 20px auto;
+    background: #F6F6F6;
+    text-align: center;
+
+    label {
+        font-size: 28px;
+        display: block;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"] + label {
+        display: inline-block;
+        margin-left: 0.5rem;
+        margin-right: 1rem;
+        margin-bottom: 0;
+        vertical-align: baseline;
+        background-color: $primary-color;
+        color: $white;
+        padding: 12px;
+        font-size: rem-calc(16);
+        width: 100%;
+
+        &:hover {
+            background: lighten($primary-color, 10%);
+        }
+    }
+
+    input[type="radio"]:checked + label {
+        background: $secondary-color;
+        color: $body-font-color;
+    }
+}
+
+.field-type-list-boolean {
+    input[type=checkbox] {
+        margin-bottom: 0;
+    }
+}
+
+// Mollom
+
+.description.mollom-privacy {
+    margin-bottom: 20px;
+    font-size: rem-calc(14);
+}

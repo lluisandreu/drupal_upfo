@@ -1,0 +1,43 @@
+// Non-modular or client styles for the .l-content region.
+
+.home-banner {
+	//max-width: 1400px;
+	margin: auto;
+	background: #DADADA;
+}
+
+.main-content {
+	padding: 60px 0;
+}
+
+.home-featured {
+	padding: 60px 0;
+	background: #EFEDEE;
+	text-align: center;
+	h2 {
+		color: $primary-color;
+		text-align: center;
+		padding: 0 0 20px 0;
+		i {
+			color: $oil;
+			margin-right: 10px;
+		}
+	}
+	@media #{$medium-only} { 
+		.block {
+			min-height: 400px; 
+		}
+	}
+	@media #{$small-only} { 
+		.block {
+			margin-bottom: 40px;
+		}
+	}
+}
+
+.home-bottom {
+	padding: 60px 0;
+	h2 {
+		text-align: center;
+	}
+}

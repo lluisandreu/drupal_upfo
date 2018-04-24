@@ -1,0 +1,173 @@
+#main-nav {
+    transition: opacity 1s ease-in-out;
+    margin-top: -9999px;
+    opacity: 0;
+
+    &.expanded {
+        margin: 0;
+        opacity: 1;
+    }
+
+    ul.menu {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-size: rem-calc(20);
+            display: block;
+
+            a {
+                padding: 10px;
+                display: inline-block;
+                color: $body-font-color;
+            }
+        }
+
+        ul.menu {
+            li a {
+                display: block;
+            }
+        }
+    }
+}
+
+@media #{$large-up} {
+
+    #main-nav {
+        display: block;
+        opacity: 1;
+        margin: auto;
+        text-align: right;
+
+        & > ul.menu {
+            & > li {
+                display: inline-block;
+                list-style: none;
+                text-align: left;
+                font-size: rem-calc(18);
+                padding: 0 10px;
+
+                &.expanded {
+                    position: relative;
+                }
+
+                &:hover {
+                    & > a {
+                        border-top: 5px solid $primary-color;
+                    }
+                }
+
+                & > a {
+                    color: $body-font-color;
+                    padding: 40px 0 20px 0;
+                    border-top: 5px solid $white;
+
+                    &.active {
+                        border-top: 5px solid $primary-color;
+                    }
+                }
+            }
+
+            ul.menu {
+                display: none;
+                z-index: 100;
+                position: absolute;
+                background: $white;
+                border-bottom: 5px solid $primary-color;
+                left: -10px;
+                min-width: 350px;
+                padding-bottom: 15px;
+
+                li {
+                    font-size: rem-calc(18);
+                    padding: 0;
+                    text-align: left;
+                    display: block;
+
+                    a {
+                        padding: 5px 20px;
+
+                        &:hover, &.active {
+                            background: $snow;
+                        }
+                    }
+                }
+            }
+
+            .submenu-toggler {
+                display: none;
+            }
+        }
+
+        .expanded:hover {
+            ul.menu {
+                display: block;
+            }
+        }
+    }
+}
+
+#main-nav {
+    ul.menu li a.enter-button {
+        color: $white;
+        padding: 10px;
+        border: none;
+        font-size: rem-calc(16);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #main-nav {
+        ul.menu .expanded {
+            margin-right: 10px;
+            position: relative;
+
+            .submenu-toggler {
+                display: inline-block;
+                padding: 10px 30px 10px 10px;
+                font-size: 24px;
+                margin-right: -65px;
+                font-weight: bolder;
+                -moz-transition: transform .5s;
+                -webkit-transition: transform .5s;
+                transition: transform .5s;
+                cursor: pointer;
+
+                &.open {
+                    position: absolute;
+                    top: 50px;
+                    right: 10px;
+                    margin-right: 0;
+                    font-size: 30px;
+                    -webkit-transform: rotate(45deg);
+                    -moz-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                }
+            }
+
+            ul.menu {
+                display: none;
+                background: lighten($primary-color, 50%);
+            }
+
+            ul.menu.open {
+                display: block;
+            }
+        }
+    }
+}
+
+#main-nav .admin-menu {
+    ul li {
+        background: $secondary-color;
+        font-size: rem-calc(14);
+
+        @media #{$large-up} {
+            display: inline-block;
+        }
+    }
+}

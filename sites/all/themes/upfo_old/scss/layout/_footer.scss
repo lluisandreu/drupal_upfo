@@ -1,0 +1,32 @@
+// Non-modular or client styles for .l-footer region.
+
+footer {
+	background: $tuatara;
+	padding: 40px 0;
+	color: $white;
+	h2 {
+		margin-top: 0;
+	}
+	.menu {
+		margin: 0;
+		padding: 0;
+		li {
+			list-style: none;
+		}
+		a {
+			color: $white;
+			&:hover {
+				color: $primary-color;
+			}
+		}
+	}
+	.social-icons {
+		a {
+			color: $white;
+		}
+		i {
+			font-size: 36px;
+			padding-left: 5px;
+		}
+	}
+}
